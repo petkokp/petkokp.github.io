@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Честит рожден ден! 🎉</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 10px;
+            text-align: center;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: white;
+            font-size: clamp(2em, 8vw, 4em);
+            text-shadow: 3px 3px 0 #ff0066;
+            margin: 10px 0;
+            animation: crazyBounce 1s infinite;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+        }
+
+        h2 {
+            color: white;
+        }
+
+        .photo-container {
+            position: relative;
+            width: 100%;
+            height: 70vh;
+            max-height: 600px;
+            margin: 10px auto;
+            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .photo {
+            position: absolute;
+            max-width: 100%;
+            max-height: 100%;
+            opacity: 0;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+            transition: opacity 0.5s;
+            object-fit: contain;
+            background: rgba(255,255,255,0.1);
+            padding: 5px;
+            box-sizing: border-box;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .photo.active {
+            opacity: 1;
+            animation: photoZoom 0.5s;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .nav-button {
+            font-size: clamp(20px, 5vw, 24px);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background: white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .party-button {
+            font-size: clamp(16px, 4vw, 20px);
+            padding: 10px 15px;
+            border: none;
+            border-radius: 25px;
+            background: #ff0066;
+            color: white;
+            cursor: pointer;
+            animation: pulse 2s infinite;
+        }
+
+        .emoji {
+            position: fixed;
+            font-size: clamp(20px, 4vw, 40px);
+            animation: randomFloat 4s ease-in-out infinite;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        @keyframes crazyBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes photoZoom {
+            from { transform: translateX(-50%) scale(0.9); }
+            to { transform: translateX(-50%) scale(1); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes randomFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10px, -20px) rotate(10deg); }
+            66% { transform: translate(-10px, -10px) rotate(-10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        @keyframes crazyFloat {
+            0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            25% { transform: translate(20px, -30px) scale(1.1) rotate(20deg); }
+            50% { transform: translate(-20px, -20px) scale(0.9) rotate(-20deg); }
+            75% { transform: translate(10px, -10px) scale(1.2) rotate(10deg); }
+            100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        }
+
+        @keyframes zigzagFloat {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(30px, -20px) rotate(10deg); }
+            50% { transform: translate(0, -40px) rotate(-10deg); }
+            75% { transform: translate(-30px, -20px) rotate(10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+
+            .photo-container {
+                height: 60vh;
+            }
+
+            .controls {
+                padding: 5px;
+            }
+
+            .nav-button {
+                padding: 8px 15px;
+            }
+
+            .party-button {
+                padding: 8px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Честит рожден ден! 🎉</h1>
+        
+        <div class="photo-container">
+            <!-- Placeholder images - replace src with your actual photo paths -->
+            <img src="./images/mishko1.png" alt="Birthday photo 1" class="photo active">
+            <img src="./images/mishko2.png" alt="Birthday photo 2" class="photo">
+            <img src="./images/mishko3.png" alt="Birthday photo 3" class="photo">
+            <img src="./images/mishko4.jpg" alt="Birthday photo 4" class="photo">
+            <img src="./images/mishko5.jpg" alt="Birthday photo 5" class="photo">
+            <img src="./images/mishko6.jpg" alt="Birthday photo 6" class="photo">
+            <img src="./images/mishko7.jpg" alt="Birthday photo 7" class="photo">
+            <img src="./images/mishko8.jpg" alt="Birthday photo 8" class="photo">
+            <img src="./images/mishko9.jpg" alt="Birthday photo 9" class="photo">
+            <img src="./images/mishko10.jpg" alt="Birthday photo 10" class="photo">
+            <img src="./images/mishko11.jpg" alt="Birthday photo 11" class="photo">
+            <img src="./images/mishko12.jpg" alt="Birthday photo 12" class="photo">
+            <img src="./images/mishko13.jpg" alt="Birthday photo 13" class="photo">
+            <img src="./images/mishko14.jpg" alt="Birthday photo 14" class="photo">
+            <img src="./images/mishko15.jpg" alt="Birthday photo 15" class="photo">
+            <img src="./images/mishko16.jpg" alt="Birthday photo 16" class="photo">
+            <img src="./images/mishko17.jpg" alt="Birthday photo 17" class="photo">
+            <img src="./images/mishko18.jpg" alt="Birthday photo 18" class="photo">
+            <img src="./images/mishko19.jpg" alt="Birthday photo 19" class="photo">
+        </div>
+
+        <audio controls autoplay>
+            <source src="./song.mp3" type="audio/mp3">
+          Your browser does not support the audio element.
+          </audio>
+
+        <h2>Много здраве, щастие и късмет! 🎉</h2>
+
+        <div class="controls">
+            <button class="nav-button" onclick="prevPhoto()">⬅️</button>
+            <button class="nav-button" onclick="nextPhoto()">➡️</button>
+        </div>
+    </div>
+
+    <script>
+        let currentPhoto = 0;
+        const photos = document.querySelectorAll('.photo');
+        
+        // Massive emoji collection
+        const emojis = [
+            // Party emojis
+            '🎉', '🎊', '🎈', '🎂', '🎁', '🎸', '🥳', '✨', '🎯', '🎨', '🎭', '🎪', '🎫', '🎠', '🎡', '🎢',
+            // Animals
+            '🦄', '🦋', '🐶', '🐱', '🐼', '🐨', '🦁', '🐯', '🦊', '🦒', '🦘', '🦩', '🦜', '🐸', '🐢', '🦖',
+            // Fun and Food
+            '🌈', '⭐', '🌟', '💫', '🍕', '🍰', '🧁', '🍭', '🍬', '🍫', '🍿', '🌭', '🍦', '🍪',
+            // People and Hearts
+            '👯', '💃', '🕺', '👑', '🤴', '👸', '🧚', '🧙', '🦸', '🦹', '💝', '💖', '💗', '💓', '💞', '💕',
+            // Random Fun
+            '🎮', '🎲', '🎱', '🎳', '🎨', '🎭', '🎪', '🎾', '🏀', '🎵', '🎶', '🎹', '🎺', '🎸', '🤹', '🎪'
+        ];
+
+        const animations = ['randomFloat', 'crazyFloat', 'zigzagFloat'];
+
+        function createFloatingEmoji() {
+            const emoji = document.createElement('div');
+            emoji.className = 'emoji';
+            emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * window.innerWidth + 'px';
+            emoji.style.top = Math.random() * window.innerHeight + 'px';
+            emoji.style.animationName = animations[Math.floor(Math.random() * animations.length)];
+            emoji.style.animationDuration = (2 + Math.random() * 3) + 's';
+            emoji.style.animationDelay = (Math.random() * -5) + 's';
+            const size = 20 + Math.random() * 30;
+            emoji.style.fontSize = `${size}px`;
+            
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => {
+                emoji.remove();
+            }, 4000);
+        }
+
+        function emojiBurst() {
+            for(let i = 0; i < 5; i++) {
+                setTimeout(createFloatingEmoji, i * 100);
+            }
+        }
+
+        function showPhoto(index) {
+            photos.forEach(photo => photo.classList.remove('active'));
+            photos[index].classList.add('active');
+        }
+
+        function nextPhoto() {
+            currentPhoto = (currentPhoto + 1) % photos.length;
+            showPhoto(currentPhoto);
+            smallConfetti();
+            emojiBurst();
+        }
+
+        function prevPhoto() {
+            currentPhoto = (currentPhoto - 1 + photos.length) % photos.length;
+            showPhoto(currentPhoto);
+            smallConfetti();
+            emojiBurst();
+        }
+
+        function smallConfetti() {
+            confetti({
+                particleCount: 50,
+                spread: 60,
+                origin: { y: 0.6 }
+            });
+        }
+
+        function partyTime() {
+            var duration = 15 * 1000000000000000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            var particleCount = 50 * (timeLeft / duration);
+            // since particles fall down, start a bit higher than random
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
+            confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
+            }, 250);
+
+            var end = Date.now() + (15 * 1000);
+
+            // go Buckeyes!
+            var colors = ['#bb0000', '#ffffff'];
+
+            (function frame() {
+            confetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors
+            });
+            confetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }}());
+        }
+
+        // Add touch swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const difference = touchStartX - touchEndX;
+
+            if (Math.abs(difference) > swipeThreshold) {
+                if (difference > 0) {
+                    nextPhoto();
+                } else {
+                    prevPhoto();
+                }
+            }
+        }
+
+        // Create emojis frequently
+        setInterval(createFloatingEmoji, 200);  // New emoji every 200ms
+        setInterval(emojiBurst, 2000);  // Burst of emojis every 2 seconds
+
+        // Initial effects
+        for(let i = 0; i < 20; i++) {
+            createFloatingEmoji();
+        }
+        partyTime();
+    </script>
+</body>
+</html>
